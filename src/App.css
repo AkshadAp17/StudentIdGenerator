@@ -1,2 +1,459 @@
-main {
+/* Main App Layout */
+.app-container {
+  min-height: 100vh;
+  background-color: #f3f4f6;
+  padding: 32px 16px;
+}
+
+.content-wrapper {
+  max-width: 1024px;
+  margin: 0 auto;
+}
+
+.main-title {
+  font-size: 1.875rem;
+  font-weight: 700;
+  text-align: center;
+  margin-bottom: 32px;
+}
+
+.main-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 32px;
+}
+
+@media (min-width: 768px) {
+  .main-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+/* Form Styling */
+.form-container, .preview-container {
+  background-color: white;
+  padding: 24px;
+  border-radius: 8px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+}
+
+.section-title {
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin-bottom: 16px;
+}
+
+.form-group {
+  margin-bottom: 16px;
+}
+
+.form-group label {
+  display: block;
+  color: #4b5563;
+  margin-bottom: 8px;
+}
+
+.form-group input, .form-group select {
+  width: 100%;
+  padding: 8px 12px;
+  border: 1px solid #d1d5db;
+  border-radius: 4px;
+}
+
+.checkbox-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.checkbox-item {
+  display: flex;
+  align-items: center;
+}
+
+.checkbox-item input {
+  width: auto;
+  margin-right: 8px;
+}
+
+.photo-preview {
+  margin-top: 8px;
+}
+
+.photo-preview img {
+  height: 128px;
+  width: 128px;
+  object-fit: cover;
+  border-radius: 4px;
+}
+
+.submit-button {
+  width: 100%;
+  background-color: #2563eb;
+  color: white;
+  padding: 8px 16px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.submit-button:hover {
+  background-color: #1d4ed8;
+}
+
+/* Saved Cards */
+.saved-cards {
+  margin-top: 24px;
+}
+
+.saved-cards h3 {
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+
+.saved-cards-list {
+  max-height: 192px;
+  overflow-y: auto;
+  border: 1px solid #e5e7eb;
+  border-radius: 4px;
+}
+
+.saved-card-item {
+  padding: 8px;
+  border-bottom: 1px solid #e5e7eb;
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+}
+
+.saved-card-item:hover {
+  background-color: #f9fafb;
+}
+
+.timestamp {
+  font-size: 0.75rem;
+  color: #6b7280;
+}
+
+/* Preview Section */
+.preview-wrapper {
+  background-color: white;
+  padding: 24px;
+  border-radius: 8px;
+  margin-bottom: 16px;
+}
+
+.preview-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.preview-header h2 {
+  font-size: 1.25rem;
+  font-weight: 600;
+}
+
+.template-selector {
+  display: flex;
+  align-items: center;
+}
+
+.template-selector label {
+  margin-right: 8px;
+}
+
+.template-selector select {
+  padding: 4px 12px;
+  border: 1px solid #d1d5db;
+  border-radius: 4px;
+}
+
+.empty-preview {
+  text-align: center;
+  padding: 48px 0;
+  color: #6b7280;
+}
+
+.download-button {
+  margin-top: 16px;
+  width: 100%;
+  background-color: #10b981;
+  color: white;
+  padding: 8px 16px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.download-button:hover {
+  background-color: #059669;
+}
+
+/* ID Card Template 1 */
+.template1-card {
+  background: linear-gradient(to right, #3b82f6, #4f46e5);
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+  padding: 24px;
+  max-width: 420px;
+  margin: 0 auto;
+  color: white;
+}
+
+.card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+}
+
+.school-name {
+  font-size: 1.5rem;
+  font-weight: 700;
+}
+
+.card-subtitle {
+  font-size: 1.125rem;
+}
+
+.school-logo {
+  background-color: white;
+  border-radius: 50%;
+  padding: 4px;
+}
+
+.school-logo img {
+  height: 64px;
+  width: 64px;
+}
+
+.student-info {
+  display: flex;
+  margin-bottom: 16px;
+}
+
+.photo-container {
+  margin-right: 16px;
+}
+
+.student-photo, .no-photo {
+  width: 128px;
+  height: 128px;
+  object-fit: cover;
+  border-radius: 8px;
+  border: 4px solid white;
+}
+
+.no-photo {
+  background-color: #d1d5db;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.student-details {
+  flex: 1;
+}
+
+.detail-item {
+  margin-bottom: 8px;
+}
+
+.label {
+  font-size: 0.75rem;
+  opacity: 0.75;
+  display: block;
+}
+
+.value {
+  font-weight: 600;
+}
+
+.allergies-container {
+  margin-bottom: 16px;
+}
+
+.allergies-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  margin-top: 4px;
+}
+
+.allergy-tag {
+  background-color: #ef4444;
+  color: white;
+  font-size: 0.75rem;
+  padding: 4px 8px;
+  border-radius: 9999px;
+}
+
+.card-footer {
+  margin-top: 16px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.qr-code {
+  background-color: white;
+  padding: 8px;
+  border-radius: 8px;
+}
+
+.issue-date {
+  font-size: 0.875rem;
+  opacity: 0.75;
+  text-align: right;
+}
+
+.issue-date span {
+  display: block;
+}
+
+/* ID Card Template 2 */
+.template2-card {
+  background-color: white;
+  border-top: 8px solid #eab308;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+  padding: 24px;
+  max-width: 420px;
+  margin: 0 auto;
+}
+
+.card-header-2 {
+  text-align: center;
+  margin-bottom: 16px;
+}
+
+.school-name-2 {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #1f2937;
+}
+
+.card-subtitle-2 {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #eab308;
+}
+
+.student-info-center {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.student-photo-2, .no-photo-2 {
+  width: 144px;
+  height: 144px;
+  object-fit: cover;
+  border-radius: 50%;
+  border: 4px solid #eab308;
+  margin-bottom: 16px;
+}
+
+.no-photo-2 {
+  background-color: #e5e7eb;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #6b7280;
+}
+
+.student-name-2 {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #1f2937;
+}
+
+.roll-number-2 {
+  color: #6b7280;
+}
+
+.details-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
+.detail-box {
+  background-color: #f3f4f6;
+  padding: 12px;
+  border-radius: 4px;
+}
+
+.detail-label {
+  font-size: 0.75rem;
+  color: #6b7280;
+  display: block;
+}
+
+.detail-value {
+  font-weight: 700;
+  color: #1f2937;
+}
+
+.allergies-alert {
+  margin-bottom: 16px;
+  background-color: #fee2e2;
+  padding: 12px;
+  border-radius: 4px;
+  border-left: 4px solid #ef4444;
+}
+
+.allergies-title {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #ef4444;
+  display: block;
+}
+
+.allergies-tags-2 {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  margin-top: 4px;
+}
+
+.allergy-tag-2 {
+  background-color: #fecaca;
+  color: #b91c1c;
+  font-size: 0.75rem;
+  padding: 4px 8px;
+  border-radius: 4px;
+}
+
+.card-footer-2 {
+  margin-top: 16px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.qr-code-2 {
+  background-color: #f3f4f6;
+  padding: 8px;
+  border-radius: 4px;
+}
+
+.validity {
+  text-align: right;
+}
+
+.validity-text {
+  font-size: 0.875rem;
+  color: #6b7280;
+}
+
+.validity-date {
+  display: block;
+  font-weight: 600;
 }

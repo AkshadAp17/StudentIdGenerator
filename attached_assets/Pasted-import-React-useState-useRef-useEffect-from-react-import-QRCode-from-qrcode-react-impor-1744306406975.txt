@@ -1,0 +1,217 @@
+import { defineConfig } from 'vite';
+import react from '@vitejs/plugin-react';
+import tailwindcss from '@tailwindcss/vite';
+
+export default defineConfig({
+  plugins: [react(), tailwindcss()],
+  server: {
+    host: '0.0.0.0', // This allows the server to be accessed externally
+  }
+});@tailwind base;
+@tailwind components;
+@tailwind utilities;import React, { useState, useRef, useEffect } from "react";
+import QRCode from "qrcode.react";
+import htmlToImage from "html-to-image";
+import "./index.css";
+
+const App = () => {
+  const [form, setForm] = useState({
+    name: "",
+    rollNumber: "",
+    allergies: [],
+    photo: null,
+    photoPreview: null,
+    rackNumber: "",
+    busRoute: "Route 1",
+  });
+
+  const [submitted, setSubmitted] = useState(false);
+  const [template, setTemplate] = useState("template1");
+  const [savedCards, setSavedCards] = useState(
+    JSON.parse(localStorage.getItem("studentCards")) || []
+  );
+
+  const cardRef = useRef();
+
+  const allergyOptions = ["Peanuts", "Dairy", "Gluten", "Shellfish", "Dust"];
+  const busRoutes = ["Route 1", "Route 2", "Route 3", "Route 4"];
+
+  const handleChange = (e) => {
+    const { name, value, files } = e.target;
+    if (name === "photo") {
+      const file = files[0];
+      const preview = URL.createObjectURL(file);
+      setForm((prev) => ({ ...prev, photo: file, photoPreview: preview }));
+    } else {
+      setForm((prev) => ({ ...prev, [name]: value }));
+    }
+  };
+
+  const handleAllergies = (e) => {
+    const value = e.target.value;
+    setForm((prev) => {
+      const updated = prev.allergies.includes(value)
+        ? prev.allergies.filter((a) => a !== value)
+        : [...prev.allergies, value];
+      return { ...prev, allergies: updated };
+    });
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    setSubmitted(true);
+    const dataToSave = { ...form, id: Date.now() };
+    const updated = [dataToSave, ...savedCards];
+    setSavedCards(updated);
+    localStorage.setItem("studentCards", JSON.stringify(updated));
+  };
+
+  const downloadPNG = () => {
+    htmlToImage.toPng(cardRef.current).then((dataUrl) => {
+      const link = document.createElement("a");
+      link.download = `${form.name}_IDCard.png`;
+      link.href = dataUrl;
+      link.click();
+    });
+  };
+
+  return (
+    <div className="min-h-screen bg-gray-100 p-6">
+      <h1 className="text-3xl font-bold text-center mb-6">
+        Smart Student ID Generator
+      </h1>
+
+      <div className="max-w-4xl mx-auto grid md:grid-cols-2 gap-6">
+        {/* Form */}
+        <form onSubmit={handleSubmit} className="bg-white p-4 rounded shadow space-y-4">
+          <input
+            type="text"
+            name="name"
+            placeholder="Name"
+            value={form.name}
+            onChange={handleChange}
+            className="w-full border p-2 rounded"
+            required
+          />
+          <input
+            type="text"
+            name="rollNumber"
+            placeholder="Roll Number"
+            value={form.rollNumber}
+            onChange={handleChange}
+            className="w-full border p-2 rounded"
+            required
+          />
+          <label className="block font-semibold">Allergies:</label>
+          <div className="flex flex-wrap gap-2">
+            {allergyOptions.map((a) => (
+              <label key={a} className="flex items-center gap-1">
+                <input
+                  type="checkbox"
+                  value={a}
+                  checked={form.allergies.includes(a)}
+                  onChange={handleAllergies}
+                />
+                {a}
+              </label>
+            ))}
+          </div>
+          <input
+            type="file"
+            accept="image/*"
+            name="photo"
+            onChange={handleChange}
+            className="w-full"
+            required
+          />
+          {form.photoPreview && (
+            <img src={form.photoPreview} alt="Preview" className="w-24 h-24 object-cover rounded" />
+          )}
+          <input
+            type="text"
+            name="rackNumber"
+            placeholder="Rack Number"
+            value={form.rackNumber}
+            onChange={handleChange}
+            className="w-full border p-2 rounded"
+            required
+          />
+          <select
+            name="busRoute"
+            value={form.busRoute}
+            onChange={handleChange}
+            className="w-full border p-2 rounded"
+          >
+            {busRoutes.map((r) => (
+              <option key={r} value={r}>
+                {r}
+              </option>
+            ))}
+          </select>
+          <button type="submit" className="bg-blue-600 text-white w-full py-2 rounded">
+            Generate ID Card
+          </button>
+        </form>
+
+        {/* ID Card */}
+        {submitted && (
+          <div>
+            <div ref={cardRef} className={`p-4 rounded shadow ${template === "template1" ? "bg-white" : "bg-gray-200"}`}>
+              <h2 className="text-xl font-semibold mb-2">Student ID Card</h2>
+              <img src={form.photoPreview} alt="Student" className="w-24 h-24 object-cover rounded mb-2" />
+              <p><strong>Name:</strong> {form.name}</p>
+              <p><strong>Roll Number:</strong> {form.rollNumber}</p>
+              <p><strong>Rack Number:</strong> {form.rackNumber}</p>
+              <p><strong>Bus Route:</strong> {form.busRoute}</p>
+              {form.allergies.length > 0 && (
+                <p><strong>Allergies:</strong> {form.allergies.join(", ")}</p>
+              )}
+              <QRCode
+                value={JSON.stringify(form)}
+                size={128}
+                className="mt-2"
+              />
+            </div>
+
+            <div className="flex items-center gap-3 mt-4">
+              <button
+                onClick={downloadPNG}
+                className="bg-green-600 text-white px-4 py-2 rounded"
+              >
+                Download as PNG
+              </button>
+              <select
+                value={template}
+                onChange={(e) => setTemplate(e.target.value)}
+                className="border p-2 rounded"
+              >
+                <option value="template1">Template 1</option>
+                <option value="template2">Template 2</option>
+              </select>
+            </div>
+          </div>
+        )}
+      </div>
+
+      {/* Saved Cards */}
+      {savedCards.length > 0 && (
+        <div className="mt-10 max-w-4xl mx-auto">
+          <h2 className="text-2xl font-semibold mb-4">Previous Cards</h2>
+          <div className="grid md:grid-cols-3 gap-4">
+            {savedCards.map((card) => (
+              <div key={card.id} className="p-3 bg-white rounded shadow">
+                <p><strong>{card.name}</strong></p>
+                <p>Roll: {card.rollNumber}</p>
+                <p>Rack: {card.rackNumber}</p>
+                <p>Bus: {card.busRoute}</p>
+                <QRCode value={JSON.stringify(card)} size={64} />
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+    </div>
+  );
+};
+
+export default App;
